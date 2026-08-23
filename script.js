@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>My Birthday 🎂</title>
+
+
+    <!-- GOOGLE FONTS -->
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;1,400&display=swap"
+        rel="stylesheet"
+    >
+
+
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     MUSIC
+===================================================== -->
+
+<audio
+    id="birthday-music"
+    preload="auto"
+>
+
+    <source
+        src="audio/birthday.mp3"
+        type="audio/mpeg"
+    >
+
+</audio>
+
+
+
+<!-- =====================================================
+     BACKGROUND
+===================================================== -->
+
+<div class="stars"></div>
+
+<div class="stars stars-2"></div>
+
+<div class="stars stars-3"></div>
+
+<div id="particles"></div>
+
+<div id="confetti-container"></div>
+
+
+
+<!-- =====================================================
+     COUNTDOWN SCREEN
+===================================================== -->
+
+<main class="birthday-container">
+
+
+    <p class="small-text">
+
+        <span id="typing-text"></span>
+
+    </p>
+
+
+    <h1>
+        MY BIRTHDAY
+    </h1>
+
+
+    <p class="date">
+        19 • 08 • 2026
+    </p>
+
+
+
+    <!-- COUNTDOWN -->
+
+    <div class="countdown">
+
+
+        <div class="time-box">
+
+            <span id="days">
+                00
+            </span>
+
+            <small>
+                DAYS
+            </small>
+
+        </div>
+
+
+        <div class="time-box">
+
+            <span id="hours">
+                00
+            </span>
+
+            <small>
+                HOURS
+            </small>
+
+        </div>
+
+
+        <div class="time-box">
+
+            <span id="minutes">
+                00
+            </span>
+
+            <small>
+                MINUTES
+            </small>
+
+        </div>
+
+
+        <div class="time-box">
+
+            <span id="seconds">
+                00
+            </span>
+
+            <small>
+                SECONDS
+            </small>
+
+        </div>
+
+
+    </div>
+
+
+    <p class="waiting">
+        ✨ WAIT FOR IT ✨
+    </p>
+
+
+</main>
+
+
+
+<!-- =====================================================
+     CELEBRATION SCREEN
+===================================================== -->
+
+<section
+    id="celebration-screen"
+    class="celebration-screen"
+>
+
+
+    <!-- =================================================
+         BALLOONS
+    ================================================== -->
+
+    <div class="balloon balloon-1"></div>
+
+    <div class="balloon balloon-2"></div>
+
+    <div class="balloon balloon-3"></div>
+
+    <div class="balloon balloon-4"></div>
+
+    <div class="balloon balloon-5"></div>
+
+    <div class="balloon balloon-6"></div>
+
+    <div class="balloon balloon-7"></div>
+
+    <div class="balloon balloon-8"></div>
+
+    <div class="balloon balloon-9"></div>
+
+    <div class="balloon balloon-10"></div>
+
+
+
+    <!-- =================================================
+         CELEBRATION CENTER
+    ================================================== -->
+
+    <div class="celebration-center">
+
+
+        <p class="celebration-small">
+
+            ✦ MAKE A WISH ✦
+
+        </p>
+
+
+
+        <!-- =================================================
+             CAKE
+        ================================================== -->
+
+        <div class="cake-area">
+
+
+            <div class="cake">
+
+
+                <!-- CANDLES -->
+
+                <button
+                    class="candle candle-1"
+                    aria-label="Blow out candle 1"
+                >
+
+                    <span class="flame"></span>
+
+                </button>
+
+
+                <button
+                    class="candle candle-2"
+                    aria-label="Blow out candle 2"
+                >
+
+                    <span class="flame"></span>
+
+                </button>
+
+
+                <button
+                    class="candle candle-3"
+                    aria-label="Blow out candle 3"
+                >
+
+                    <span class="flame"></span>
+
+                </button>
+
+
+                <button
+                    class="candle candle-4"
+                    aria-label="Blow out candle 4"
+                >
+
+                    <span class="flame"></span>
+
+                </button>
+
+
+                <button
+                    class="candle candle-5"
+                    aria-label="Blow out candle 5"
+                >
+
+                    <span class="flame"></span>
+
+                </button>
+
+
+
+                <!-- CAKE TOP -->
+
+                <div class="cake-top"></div>
+
+
+                <!-- CAKE BODY -->
+
+                <div class="cake-body">
+
+                    <div class="cake-cream"></div>
+
+                    <div class="cake-drip drip-1"></div>
+
+                    <div class="cake-drip drip-2"></div>
+
+                    <div class="cake-drip drip-3"></div>
+
+                    <div class="cake-drip drip-4"></div>
+
+                </div>
+
+
+                <!-- CAKE PLATE -->
+
+                <div class="cake-plate"></div>
+
+
+            </div>
+
+
+        </div>
+
+
+
+        <!-- =================================================
+             INSTRUCTION
+        ================================================== -->
+
+        <p
+            id="candle-instruction"
+            class="candle-instruction"
+        >
+
+            ✦ CLICK THE CANDLES TO BLOW THEM OUT ✦
+
+        </p>
+
+
+
+        <!-- =================================================
+             CELEBRATION TEXT
+        ================================================== -->
+
+        <p class="celebration-text">
+
+            MAKE A WISH...
+
+        </p>
+
+
+
+        <!-- =================================================
+             ENTER BUTTON
+        ================================================== -->
+
+        <button
+            id="enter-button"
+            class="enter-button"
+        >
+
+            ENTER ✦
+
+        </button>
+
+
+    </div>
+
+
+</section>
+
+
+
+<!-- =====================================================
+     HAPPY BIRTHDAY SCREEN
+===================================================== -->
+
+<section
+    id="birthday-screen"
+    class="birthday-screen"
+>
+
+
+    <div class="celebration-content">
+
+
+        <p class="celebration-small">
+
+            ✦ THE WAIT IS OVER ✦
+
+        </p>
+
+
+        <h2>
+
+            HAPPY<br>
+
+            20th 
+            
+            BIRTHDAY
+
+        </h2>
+
+
+        <p class="birthday-name">
+
+            VANSHIKA
+
+        </p>
+
+
+        <p class="birthday-message">
+
+            Here's to another beautiful year.
+
+        </p>
+
+
+        <button id="surprise-button">
+
+            OPEN YOUR SURPRISE 🎁
+
+        </button>
+
+
+    </div>
+
+
+</section>
+
+
+
+<!-- =====================================================
+     SURPRISE SCREEN
+===================================================== -->
+
+<section
+    id="surprise-screen"
+    class="surprise-screen"
+>
+
+
+    <div class="surprise-content">
+
+
+        <p class="surprise-small">
+
+            ✦ A LITTLE SOMETHING FOR YOU ✦
+
+        </p>
+
+
+        <h2>
+
+            ANOTHER YEAR,
+
+            <br>
+
+            ANOTHER STORY.
+
+        </h2>
+
+
+        <p class="surprise-text">
+
+            Here's to everything you've experienced,
+            everything you've learned,
+            and everything that's still waiting for you.
+
+        </p>
+
+
+        <button id="continue-button">
+
+            CONTINUE ✦
+
+        </button>
+
+
+    </div>
+
+
+</section>
+
+
+
+<!-- =====================================================
+     MEMORIES SCREEN
+===================================================== -->
+
+<section
+    id="memories-screen"
+    class="memories-screen"
+>
+
+
+    <div class="memories-content">
+
+
+        <p class="memories-small">
+
+            ✦ LITTLE MOMENTS ✦
+
+        </p>
+
+
+        <h2>
+
+            MEMORIES
+
+        </h2>
+
+
+        <p class="memories-intro">
+
+            Some moments deserve to be remembered forever.
+
+        </p>
+
+
+
+        <div class="memory-grid">
+
+
+            <div class="memory-card">
+
+                <div class="photo-placeholder">
+
+                    <img
+                        src="photos/Photo1.jpeg"
+                        alt="Memory 1"
+                    >
+
+                </div>
+
+                <p>
+                    A moment worth remembering.
+                </p>
+
+            </div>
+
+
+
+            <div class="memory-card">
+
+                <div class="photo-placeholder">
+
+                    <img
+                        src="photos/Photo2.jpeg"
+                        alt="Memory 2"
+                    >
+
+                </div>
+
+                <p>
+                    Another beautiful memory.
+                </p>
+
+            </div>
+
+
+
+            <div class="memory-card">
+
+                <div class="photo-placeholder">
+
+                    <img
+                        src="photos/Photo3.jpeg"
+                        alt="Memory 3"
+                    >
+
+                </div>
+
+                <p>
+                    One more chapter.
+                </p>
+
+            </div>
+
+
+
+            <div class="memory-card">
+
+                <div class="photo-placeholder">
+
+                    <img
+                        src="photos/Photo4.jpeg"
+                        alt="Memory 4"
+                    >
+
+                </div>
+
+                <p>
+                    And many more to come.
+                </p>
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+
+</section>
+
+
+
+<script src="script.js"></script>
+
+
+</body>
+
+</html>
