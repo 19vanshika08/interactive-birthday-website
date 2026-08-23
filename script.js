@@ -14,8 +14,7 @@
 
 
 const birthday =
-    new Date(Date.now() + 10000).getTime();
-
+    new Date(Date.now() + 10000).getTime();// this is a demo so countdown is set to 10s you can replace it with your birthday countdown,format mentioned in the comment above this line
 
 let birthdayStarted = false;
 
