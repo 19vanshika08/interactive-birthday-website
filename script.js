@@ -1,605 +1,942 @@
-<!DOCTYPE html>
-<html lang="en">
+// =========================================================
+// BIRTHDAY COUNTDOWN
+// =========================================================
 
-<head>
 
-    <meta charset="UTF-8">
+// TEST MODE
+// Birthday happens 10 seconds after page loads.
+//
+// When everything is finished testing,
+// replace this with:
+//
+// const birthday =
+//     new Date("August 19, 2026 00:00:00").getTime();
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
 
-    <title>My Birthday 🎂</title>
+const birthday =
+    new Date(Date.now() + 10000).getTime();
 
 
-    <!-- GOOGLE FONTS -->
+let birthdayStarted = false;
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
+let candlesBlown = 0;
 
-    <link
-        rel="preconnect"
-        href="https://fonts.gstatic.com"
-        crossorigin
-    >
+const totalCandles = 5;
 
-    <link
-        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;1,400&display=swap"
-        rel="stylesheet"
-    >
 
+// =========================================================
+// ELEMENTS
+// =========================================================
 
-    <link rel="stylesheet" href="style.css">
+const daysElement =
+    document.getElementById("days");
 
-</head>
+const hoursElement =
+    document.getElementById("hours");
 
+const minutesElement =
+    document.getElementById("minutes");
 
-<body>
+const secondsElement =
+    document.getElementById("seconds");
 
 
-<!-- =====================================================
-     MUSIC
-===================================================== -->
+const birthdayContainer =
+    document.querySelector(
+        ".birthday-container"
+    );
 
-<audio
-    id="birthday-music"
-    preload="auto"
->
 
-    <source
-        src="audio/birthday.mp3"
-        type="audio/mpeg"
-    >
+const celebrationScreen =
+    document.getElementById(
+        "celebration-screen"
+    );
 
-</audio>
 
+const birthdayScreen =
+    document.getElementById(
+        "birthday-screen"
+    );
 
 
-<!-- =====================================================
-     BACKGROUND
-===================================================== -->
+const surpriseScreen =
+    document.getElementById(
+        "surprise-screen"
+    );
 
-<div class="stars"></div>
 
-<div class="stars stars-2"></div>
+const memoriesScreen =
+    document.getElementById(
+        "memories-screen"
+    );
 
-<div class="stars stars-3"></div>
 
-<div id="particles"></div>
+const enterButton =
+    document.getElementById(
+        "enter-button"
+    );
 
-<div id="confetti-container"></div>
 
+const surpriseButton =
+    document.getElementById(
+        "surprise-button"
+    );
 
 
-<!-- =====================================================
-     COUNTDOWN SCREEN
-===================================================== -->
+const continueButton =
+    document.getElementById(
+        "continue-button"
+    );
 
-<main class="birthday-container">
 
+const music =
+    document.getElementById(
+        "birthday-music"
+    );
 
-    <p class="small-text">
 
-        <span id="typing-text"></span>
+const particleContainer =
+    document.getElementById(
+        "particles"
+    );
 
-    </p>
 
+const confettiContainer =
+    document.getElementById(
+        "confetti-container"
+    );
 
-    <h1>
-        MY BIRTHDAY
-    </h1>
 
+const candleInstruction =
+    document.getElementById(
+        "candle-instruction"
+    );
 
-    <p class="date">
-        19 • 08 • 2026
-    </p>
 
+const candles =
+    document.querySelectorAll(
+        ".candle"
+    );
 
 
-    <!-- COUNTDOWN -->
+// =========================================================
+// COUNTDOWN
+// =========================================================
 
-    <div class="countdown">
+function updateCountdown() {
 
+    const now =
+        new Date().getTime();
 
-        <div class="time-box">
 
-            <span id="days">
-                00
-            </span>
+    const difference =
+        birthday - now;
 
-            <small>
-                DAYS
-            </small>
 
-        </div>
+    // =====================================================
+    // BIRTHDAY START
+    // =====================================================
 
+    if (
+        difference <= 0 &&
+        !birthdayStarted
+    ) {
 
-        <div class="time-box">
+        birthdayStarted = true;
 
-            <span id="hours">
-                00
-            </span>
 
-            <small>
-                HOURS
-            </small>
+        daysElement.textContent = "00";
 
-        </div>
+        hoursElement.textContent = "00";
 
+        minutesElement.textContent = "00";
 
-        <div class="time-box">
+        secondsElement.textContent = "00";
 
-            <span id="minutes">
-                00
-            </span>
 
-            <small>
-                MINUTES
-            </small>
+        // Hide countdown
 
-        </div>
+        birthdayContainer.classList.add(
+            "hidden"
+        );
 
 
-        <div class="time-box">
+        // Show celebration
 
-            <span id="seconds">
-                00
-            </span>
+        celebrationScreen.classList.add(
+            "active"
+        );
 
-            <small>
-                SECONDS
-            </small>
 
-        </div>
+        // Start celebration effects
 
+        createConfetti();
 
-    </div>
+        createCelebrationParticles();
 
 
-    <p class="waiting">
-        ✨ WAIT FOR IT ✨
-    </p>
+        return;
+    }
 
 
-</main>
+    // =====================================================
+    // CALCULATE TIME
+    // =====================================================
 
+    const days =
+        Math.floor(
+            difference /
+            (1000 * 60 * 60 * 24)
+        );
 
 
-<!-- =====================================================
-     CELEBRATION SCREEN
-===================================================== -->
+    const hours =
+        Math.floor(
+            (
+                difference /
+                (1000 * 60 * 60)
+            ) % 24
+        );
 
-<section
-    id="celebration-screen"
-    class="celebration-screen"
->
 
+    const minutes =
+        Math.floor(
+            (
+                difference /
+                (1000 * 60)
+            ) % 60
+        );
 
-    <!-- =================================================
-         BALLOONS
-    ================================================== -->
 
-    <div class="balloon balloon-1"></div>
+    const seconds =
+        Math.floor(
+            (
+                difference /
+                1000
+            ) % 60
+        );
 
-    <div class="balloon balloon-2"></div>
 
-    <div class="balloon balloon-3"></div>
+    // =====================================================
+    // DISPLAY
+    // =====================================================
 
-    <div class="balloon balloon-4"></div>
+    daysElement.textContent =
+        String(days).padStart(2, "0");
 
-    <div class="balloon balloon-5"></div>
 
-    <div class="balloon balloon-6"></div>
+    hoursElement.textContent =
+        String(hours).padStart(2, "0");
 
-    <div class="balloon balloon-7"></div>
 
-    <div class="balloon balloon-8"></div>
+    minutesElement.textContent =
+        String(minutes).padStart(2, "0");
 
-    <div class="balloon balloon-9"></div>
 
-    <div class="balloon balloon-10"></div>
+    secondsElement.textContent =
+        String(seconds).padStart(2, "0");
+}
 
 
+// Start immediately
 
-    <!-- =================================================
-         CELEBRATION CENTER
-    ================================================== -->
+updateCountdown();
 
-    <div class="celebration-center">
 
+// Update every second
 
-        <p class="celebration-small">
+setInterval(
+    updateCountdown,
+    1000
+);
 
-            ✦ MAKE A WISH ✦
 
-        </p>
+// =========================================================
+// CANDLE INTERACTION
+// =========================================================
 
+candles.forEach(
+    function(candle) {
 
+        candle.addEventListener(
+            "click",
+            function() {
 
-        <!-- =================================================
-             CAKE
-        ================================================== -->
 
-        <div class="cake-area">
+                // Already blown?
 
+                if (
+                    candle.classList.contains(
+                        "blown"
+                    )
+                ) {
 
-            <div class="cake">
+                    return;
 
+                }
 
-                <!-- CANDLES -->
 
-                <button
-                    class="candle candle-1"
-                    aria-label="Blow out candle 1"
-                >
+                // Blow candle
 
-                    <span class="flame"></span>
+                candle.classList.add(
+                    "blown"
+                );
 
-                </button>
 
+                candlesBlown++;
 
-                <button
-                    class="candle candle-2"
-                    aria-label="Blow out candle 2"
-                >
 
-                    <span class="flame"></span>
+                // Small burst at candle
 
-                </button>
+                createCandleSpark(
+                    candle
+                );
 
 
-                <button
-                    class="candle candle-3"
-                    aria-label="Blow out candle 3"
-                >
+                // =================================================
+                // ALL CANDLES BLOWN
+                // =================================================
 
-                    <span class="flame"></span>
+                if (
+                    candlesBlown === totalCandles
+                ) {
 
-                </button>
+                    allCandlesBlown();
 
+                }
 
-                <button
-                    class="candle candle-4"
-                    aria-label="Blow out candle 4"
-                >
+            }
+        );
 
-                    <span class="flame"></span>
+    }
+);
 
-                </button>
 
+// =========================================================
+// ALL CANDLES BLOWN
+// =========================================================
 
-                <button
-                    class="candle candle-5"
-                    aria-label="Blow out candle 5"
-                >
+function allCandlesBlown() {
 
-                    <span class="flame"></span>
 
-                </button>
+    // Change instruction
 
+    candleInstruction.textContent =
+        "✦ WISH GRANTED ✦";
 
 
-                <!-- CAKE TOP -->
+    candleInstruction.classList.add(
+        "completed"
+    );
 
-                <div class="cake-top"></div>
 
+    // Bigger confetti burst
 
-                <!-- CAKE BODY -->
+    createConfetti();
 
-                <div class="cake-body">
 
-                    <div class="cake-cream"></div>
+    // Create magical particles
 
-                    <div class="cake-drip drip-1"></div>
+    createCelebrationParticles();
 
-                    <div class="cake-drip drip-2"></div>
 
-                    <div class="cake-drip drip-3"></div>
+    // Show enter button
 
-                    <div class="cake-drip drip-4"></div>
+    setTimeout(
+        function() {
 
-                </div>
+            enterButton.classList.add(
+                "visible"
+            );
 
+        },
+        700
+    );
+}
 
-                <!-- CAKE PLATE -->
 
-                <div class="cake-plate"></div>
+// =========================================================
+// ENTER BUTTON
+// =========================================================
 
+enterButton.addEventListener(
+    "click",
+    function() {
 
-            </div>
 
+        // Prevent multiple clicks
 
-        </div>
+        enterButton.disabled = true;
 
 
+        // =================================================
+        // MUSIC
+        // =================================================
 
-        <!-- =================================================
-             INSTRUCTION
-        ================================================== -->
+        if (music) {
 
-        <p
-            id="candle-instruction"
-            class="candle-instruction"
-        >
+            music.volume = 0.75;
 
-            ✦ CLICK THE CANDLES TO BLOW THEM OUT ✦
 
-        </p>
+            // Start from beginning only once
 
+            if (
+                music.paused
+            ) {
 
+                music.currentTime = 0;
 
-        <!-- =================================================
-             CELEBRATION TEXT
-        ================================================== -->
+                music.play()
+                    .catch(
+                        function(error) {
 
-        <p class="celebration-text">
+                            console.log(
+                                "Music error:",
+                                error
+                            );
 
-            MAKE A WISH...
+                        }
+                    );
 
-        </p>
+            }
 
+        }
 
 
-        <!-- =================================================
-             ENTER BUTTON
-        ================================================== -->
+        // =================================================
+        // EXTRA CELEBRATION
+        // =================================================
 
-        <button
-            id="enter-button"
-            class="enter-button"
-        >
+        createConfetti();
 
-            ENTER ✦
 
-        </button>
+        createCelebrationParticles();
 
 
-    </div>
+        // =================================================
+        // TRANSITION
+        // =================================================
 
+        setTimeout(
+            function() {
 
-</section>
+                celebrationScreen.classList.remove(
+                    "active"
+                );
 
 
+                birthdayScreen.classList.add(
+                    "active"
+                );
 
-<!-- =====================================================
-     HAPPY BIRTHDAY SCREEN
-===================================================== -->
 
-<section
-    id="birthday-screen"
-    class="birthday-screen"
->
+                enterButton.disabled = false;
 
+            },
+            3500
+        );
 
-    <div class="celebration-content">
+    }
+);
 
 
-        <p class="celebration-small">
+// =========================================================
+// CONFETTI
+// =========================================================
 
-            ✦ THE WAIT IS OVER ✦
+function createConfetti() {
 
-        </p>
+    if (!confettiContainer) {
 
+        return;
 
-        <h2>
+    }
 
-            HAPPY<br>
 
-            20th 
-            
-            BIRTHDAY
+    for (
+        let i = 0;
+        i < 100;
+        i++
+    ) {
 
-        </h2>
 
+        const piece =
+            document.createElement(
+                "div"
+            );
 
-        <p class="birthday-name">
 
-            VANSHIKA
+        piece.classList.add(
+            "confetti"
+        );
 
-        </p>
 
+        piece.style.left =
+            Math.random() * 100 + "%";
 
-        <p class="birthday-message">
 
-            Here's to another beautiful year.
+        piece.style.animationDuration =
+            2.5 +
+            Math.random() * 4 +
+            "s";
 
-        </p>
 
+        piece.style.animationDelay =
+            Math.random() * 0.8 +
+            "s";
 
-        <button id="surprise-button">
 
-            OPEN YOUR SURPRISE 🎁
+        piece.style.transform =
+            `rotate(
+                ${Math.random() * 360}deg
+            )`;
 
-        </button>
 
+        // Slightly different sizes
 
-    </div>
+        piece.style.width =
+            5 +
+            Math.random() * 7 +
+            "px";
 
 
-</section>
+        piece.style.height =
+            8 +
+            Math.random() * 10 +
+            "px";
 
 
+        confettiContainer.appendChild(
+            piece
+        );
 
-<!-- =====================================================
-     SURPRISE SCREEN
-===================================================== -->
 
-<section
-    id="surprise-screen"
-    class="surprise-screen"
->
+        // Remove later
 
+        setTimeout(
+            function() {
 
-    <div class="surprise-content">
+                piece.remove();
 
+            },
+            7000
+        );
 
-        <p class="surprise-small">
+    }
 
-            ✦ A LITTLE SOMETHING FOR YOU ✦
+}
 
-        </p>
 
+// =========================================================
+// CANDLE SPARKS
+// =========================================================
 
-        <h2>
+function createCandleSpark(
+    candle
+) {
 
-            ANOTHER YEAR,
 
-            <br>
+    const rect =
+        candle.getBoundingClientRect();
 
-            ANOTHER STORY.
 
-        </h2>
+    for (
+        let i = 0;
+        i < 8;
+        i++
+    ) {
 
 
-        <p class="surprise-text">
+        const spark =
+            document.createElement(
+                "div"
+            );
 
-            Here's to everything you've experienced,
-            everything you've learned,
-            and everything that's still waiting for you.
 
-        </p>
+        spark.style.position =
+            "fixed";
 
 
-        <button id="continue-button">
+        spark.style.left =
+            rect.left +
+            rect.width / 2 +
+            "px";
 
-            CONTINUE ✦
 
-        </button>
+        spark.style.top =
+            rect.top +
+            "px";
 
 
-    </div>
+        spark.style.width =
+            "4px";
 
 
-</section>
+        spark.style.height =
+            "4px";
 
 
+        spark.style.borderRadius =
+            "50%";
 
-<!-- =====================================================
-     MEMORIES SCREEN
-===================================================== -->
 
-<section
-    id="memories-screen"
-    class="memories-screen"
->
+        spark.style.background =
+            "#ffd166";
 
 
-    <div class="memories-content">
+        spark.style.pointerEvents =
+            "none";
 
 
-        <p class="memories-small">
+        spark.style.zIndex =
+            "20000";
 
-            ✦ LITTLE MOMENTS ✦
 
-        </p>
+        document.body.appendChild(
+            spark
+        );
 
 
-        <h2>
+        const angle =
+            Math.random() *
+            Math.PI *
+            2;
 
-            MEMORIES
 
-        </h2>
+        const distance =
+            20 +
+            Math.random() * 35;
 
 
-        <p class="memories-intro">
+        const x =
+            Math.cos(angle) *
+            distance;
 
-            Some moments deserve to be remembered forever.
 
-        </p>
+        const y =
+            Math.sin(angle) *
+            distance;
 
 
+        spark.animate(
+            [
+                {
+                    transform:
+                        "translate(0,0)",
+                    opacity: 1
+                },
 
-        <div class="memory-grid">
+                {
+                    transform:
+                        `translate(${x}px,${y}px)`,
+                    opacity: 0
+                }
+            ],
+            {
+                duration: 700,
 
+                easing:
+                    "ease-out"
+            }
+        );
 
-            <div class="memory-card">
 
-                <div class="photo-placeholder">
+        setTimeout(
+            function() {
 
-                    <img
-                        src="photos/Photo1.jpeg"
-                        alt="Memory 1"
-                    >
+                spark.remove();
 
-                </div>
+            },
+            700
+        );
 
-                <p>
-                    A moment worth remembering.
-                </p>
+    }
 
-            </div>
+}
 
 
+// =========================================================
+// CELEBRATION PARTICLES
+// =========================================================
 
-            <div class="memory-card">
+function createCelebrationParticles() {
 
-                <div class="photo-placeholder">
 
-                    <img
-                        src="photos/Photo2.jpeg"
-                        alt="Memory 2"
-                    >
+    for (
+        let i = 0;
+        i < 35;
+        i++
+    ) {
 
-                </div>
 
-                <p>
-                    Another beautiful memory.
-                </p>
+        const particle =
+            document.createElement(
+                "div"
+            );
 
-            </div>
 
+        particle.style.position =
+            "fixed";
 
 
-            <div class="memory-card">
+        particle.style.left =
+            "50%";
 
-                <div class="photo-placeholder">
 
-                    <img
-                        src="photos/Photo3.jpeg"
-                        alt="Memory 3"
-                    >
+        particle.style.top =
+            "50%";
 
-                </div>
 
-                <p>
-                    One more chapter.
-                </p>
+        particle.style.width =
+            "4px";
 
-            </div>
 
+        particle.style.height =
+            "4px";
 
 
-            <div class="memory-card">
+        particle.style.borderRadius =
+            "50%";
 
-                <div class="photo-placeholder">
 
-                    <img
-                        src="photos/Photo4.jpeg"
-                        alt="Memory 4"
-                    >
+        particle.style.background =
+            "white";
 
-                </div>
 
-                <p>
-                    And many more to come.
-                </p>
+        particle.style.boxShadow =
+            "0 0 10px #c9a7ff";
 
-            </div>
 
+        particle.style.pointerEvents =
+            "none";
 
-        </div>
 
+        particle.style.zIndex =
+            "15000";
 
-    </div>
 
+        document.body.appendChild(
+            particle
+        );
 
-</section>
 
+        const angle =
+            Math.random() *
+            Math.PI *
+            2;
 
 
-<script src="script.js"></script>
+        const distance =
+            100 +
+            Math.random() * 300;
 
 
-</body>
+        const x =
+            Math.cos(angle) *
+            distance;
 
-</html>
+
+        const y =
+            Math.sin(angle) *
+            distance;
+
+
+        particle.animate(
+            [
+                {
+                    transform:
+                        "translate(-50%,-50%) scale(1)",
+                    opacity: 1
+                },
+
+                {
+                    transform:
+                        `translate(
+                            calc(-50% + ${x}px),
+                            calc(-50% + ${y}px)
+                        )
+                        scale(0)`,
+                    opacity: 0
+                }
+            ],
+            {
+                duration:
+                    1200 +
+                    Math.random() * 1000,
+
+                easing:
+                    "cubic-bezier(.2,.8,.2,1)"
+            }
+        );
+
+
+        setTimeout(
+            function() {
+
+                particle.remove();
+
+            },
+            2500
+        );
+
+    }
+
+}
+
+
+// =========================================================
+// TYPING ANIMATION
+// =========================================================
+
+const typingText =
+    "A little something is coming...";
+
+
+const typingElement =
+    document.getElementById(
+        "typing-text"
+    );
+
+
+let textIndex = 0;
+
+
+function typeText() {
+
+
+    if (
+        typingElement &&
+        textIndex < typingText.length
+    ) {
+
+
+        typingElement.textContent +=
+            typingText.charAt(
+                textIndex
+            );
+
+
+        textIndex++;
+
+
+        setTimeout(
+            typeText,
+            80
+        );
+
+    }
+
+}
+
+
+typeText();
+
+
+// =========================================================
+// BACKGROUND PARTICLES
+// =========================================================
+
+if (particleContainer) {
+
+
+    for (
+        let i = 0;
+        i < 40;
+        i++
+    ) {
+
+
+        const particle =
+            document.createElement(
+                "div"
+            );
+
+
+        particle.classList.add(
+            "particle"
+        );
+
+
+        particle.style.left =
+            Math.random() * 100 +
+            "%";
+
+
+        particle.style.animationDuration =
+            5 +
+            Math.random() * 10 +
+            "s";
+
+
+        particle.style.animationDelay =
+            Math.random() * 10 +
+            "s";
+
+
+        particleContainer.appendChild(
+            particle
+        );
+
+    }
+
+}
+
+
+// =========================================================
+// SURPRISE BUTTON
+// =========================================================
+
+if (
+    surpriseButton &&
+    surpriseScreen
+) {
+
+
+    surpriseButton.addEventListener(
+        "click",
+        function() {
+
+
+            birthdayScreen.classList.remove(
+                "active"
+            );
+
+
+            surpriseScreen.classList.add(
+                "active"
+            );
+
+        }
+    );
+
+}
+
+
+// =========================================================
+// CONTINUE BUTTON
+// =========================================================
+
+if (
+    continueButton &&
+    memoriesScreen
+) {
+
+
+    continueButton.addEventListener(
+        "click",
+        function() {
+
+
+            surpriseScreen.classList.remove(
+                "active"
+            );
+
+
+            memoriesScreen.classList.add(
+                "active"
+            );
+
+        }
+    );
+
+}
